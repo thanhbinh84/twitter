@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>381237685435-vmvj7h96sir0o7lfm2fh7cg3irt5e5dh.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.381237685435-vmvj7h96sir0o7lfm2fh7cg3irt5e5dh</string>
+	<key>ANDROID_CLIENT_ID</key>
+	<string>381237685435-gu0fs8f8lhb582r0km644h33nv02d3io.apps.googleusercontent.com</string>
+	<key>API_KEY</key>
+	<string>AIzaSyBK2lg7jXi9jQzomFjrnyZ40C_PgMhWL0s</string>
+	<key>GCM_SENDER_ID</key>
+	<string>381237685435</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.ntbinh.twitter</string>
+	<key>PROJECT_ID</key>
+	<string>mms-challenge-a2cea</string>
+	<key>STORAGE_BUCKET</key>
+	<string>mms-challenge-a2cea.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:381237685435:ios:d6c1b61e50412fa5c3cd9e</string>
+</dict>
+</plist>
