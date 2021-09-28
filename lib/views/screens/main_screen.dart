@@ -2,6 +2,7 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:mms/blocs/auth/auth_bloc.dart';
 import 'package:mms/blocs/message/message_cubit.dart';
 import 'package:mms/blocs/message/message_states.dart';
 import 'package:mms/common/utils.dart';
@@ -23,7 +24,6 @@ class _MainScreenState extends State<MainScreen> {
   TextEditingController _inputController = TextEditingController();
   final _listController = ScrollController();
   late MessageCubit _messageCubit;
-  UniqueKey _popupMenuKey = UniqueKey();
 
   @override
   void initState() {
@@ -45,12 +45,42 @@ class _MainScreenState extends State<MainScreen> {
         child: Scaffold(
           appBar: AppBar(
             title: Text('Simple Twitter'),
-            actions: [ThemeButton()],
+            actions: [ThemeButton(), _signOutButton],
           ),
           body: Column(
             children: [_mainListView(), _inputField()],
           ),
         ));
+  }
+
+  get _signOutButton =>
+      IconButton(onPressed: _showSignOutDialog, icon: Icon(Icons.logout));
+
+  _showSignOutDialog() {
+    showDialog(
+      context: context,
+      builder: (BuildContext dialogContext) {
+        return AlertDialog(
+          title: Text("Sign out"),
+          content: Text("Are you sure you want to sign out?"),
+          actions: [
+            TextButton(
+              child: Text("Cancel"),
+              onPressed:  () => Navigator.of(dialogContext).pop(),
+            ),
+            TextButton(
+              child: Text("Confirm"),
+              onPressed:  () => _logout(dialogContext),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  _logout(BuildContext dialogContext) {
+    Navigator.of(dialogContext).pop();
+    BlocProvider.of<AuthCubit>(context).loggedOut();
   }
 
   _mainListView() => Expanded(
