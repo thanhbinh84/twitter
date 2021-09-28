@@ -17,10 +17,10 @@ class FirebaseMessageRepository implements MessageRepository {
   }
 
   @override
-  Stream<List<Message>> messages() {
+  Stream<List<Message>> getMessages(String? userId) {
     return messageCollection.orderBy(Message.KEY_DATE, descending: true) .snapshots().map((snapshot) {
       return snapshot.docs
-          .map((doc) => Message.fromJson(doc.data()))
+          .map((doc) => Message.fromJson(doc, userId))
           .toList();
     });
   }

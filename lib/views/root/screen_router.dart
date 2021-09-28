@@ -33,7 +33,9 @@ class ScreenRouter {
 
   Function buildPageRoute(RouteSettings settings) {
     List<BlocProvider> blocProviders = [
-      BlocProvider<MessageCubit>(create: (context) => MessageCubit(messageRepository: messageRepository)),
+      BlocProvider<MessageCubit>(
+          create: (context) =>
+              MessageCubit(messageRepository: messageRepository, userRepository: userRepository)),
       BlocProvider<AuthCubit>(
         create: (context) => AuthCubit(userRepository: userRepository),
       ),

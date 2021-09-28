@@ -5,7 +5,7 @@ abstract class MessageRepository {
 
   Future<void> deleteMessage(Message message);
 
-  Stream<List<Message>> messages();
+  Stream<List<Message>> getMessages(String? userId);
 
   Future<void> updateMessage(Message message);
 }
