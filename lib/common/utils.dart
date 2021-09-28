@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:intl/intl.dart';
 
 class Utils {
   static toast(dynamic str) {
@@ -18,5 +19,14 @@ class Utils {
         backgroundColor: Colors.red,
         textColor: Colors.white,
         fontSize: 13.0);
+  }
+
+  static String convertToTimeString(DateTime dateTime) {
+    try {
+      DateFormat _dateFormat = DateFormat('hh:mm a');
+      return _dateFormat.format(dateTime);
+    } catch (e) {
+      return "";
+    }
   }
 }

@@ -1,8 +1,8 @@
 // @dart=2.9
 import 'package:bloc_test/bloc_test.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mms/blocs/chart/chart_cubit.dart';
-import 'package:mms/blocs/chart/chart_states.dart';
+import 'package:mms/blocs/chart/message_cubit.dart';
+import 'package:mms/blocs/chart/message_states.dart';
 import 'package:mms/data/repositories/chart_repos.dart';
 import 'package:mockito/mockito.dart';
 
@@ -16,15 +16,15 @@ void main() {
     setUp(() {
       TestWidgetsFlutterBinding.ensureInitialized();
       issueRepository = MockIssueRepository();
-      chartCubit = ChartCubit(issueRepository: issueRepository);
+      chartCubit = ChartCubit(messageRepository: issueRepository);
     });
 
     blocTest(
       'success case',
       build: () => chartCubit,
       act: (ChartCubit bloc) {
-        when(issueRepository.getChartData(any)).thenAnswer((_) => Future.value());
-        bloc.getChartData();
+        when(issueRepository.getMessages(any)).thenAnswer((_) => Future.value());
+        bloc.getMessages();
       },
       expect: () => [isA<ChartLoadInProgress>(),  isA<ChartLoadSuccess>()],
     );
@@ -33,8 +33,8 @@ void main() {
       'failure case',
       build: () => chartCubit,
       act: (ChartCubit bloc) {
-        when(issueRepository.getChartData(any)).thenThrow(Exception());
-        bloc.getChartData();
+        when(issueRepository.getMessages(any)).thenThrow(Exception());
+        bloc.getMessages();
       },
       expect: () => [isA<ChartLoadInProgress>(),  isA<ChartFailure>()],
     );

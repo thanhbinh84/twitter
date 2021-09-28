@@ -1,25 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mms/blocs/auth/auth_bloc.dart';
-import 'package:mms/blocs/chart/chart_cubit.dart';
-import 'package:mms/data/repositories/chart_repos.dart';
+import 'package:mms/blocs/message/message_cubit.dart';
+import 'package:mms/data/repositories/firebase_message_repository.dart';
 import 'package:mms/data/repositories/firebase_user_repository.dart';
+import 'package:mms/data/repositories/message_repository.dart';
 import 'package:mms/data/repositories/user_repository.dart';
-import 'package:mms/data/services/api.dart';
-import 'package:mms/data/services/mocks/mock_api.dart';
 import 'package:mms/views/root/root.dart';
 
 class ScreenRouter {
   static const ROOT = '/';
 
-  late ChartRepository issueRepository;
+  late MessageRepository messageRepository;
   late UserRepository userRepository;
-  late BaseAPI api;
 
   ScreenRouter() {
-    api = MockAPI();
-
-    issueRepository = ChartRepository(api: api);
+    messageRepository = FirebaseMessageRepository();
     userRepository = FirebaseUserRepository();
   }
 
@@ -37,11 +33,7 @@ class ScreenRouter {
 
   Function buildPageRoute(RouteSettings settings) {
     List<BlocProvider> blocProviders = [
-      BlocProvider<ChartCubit>(
-        create: (context) => ChartCubit(
-          issueRepository: issueRepository,
-        ),
-      ),
+      BlocProvider<MessageCubit>(create: (context) => MessageCubit(messageRepository: messageRepository)),
       BlocProvider<AuthCubit>(
         create: (context) => AuthCubit(userRepository: userRepository),
       ),

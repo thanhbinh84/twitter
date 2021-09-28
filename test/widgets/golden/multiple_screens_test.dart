@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:golden_toolkit/golden_toolkit.dart';
-import 'package:mms/blocs/chart/chart_cubit.dart';
+import 'package:mms/blocs/chart/message_cubit.dart';
 import 'package:mms/blocs/theme/theme_cubit.dart';
 import 'package:mms/data/repositories/chart_repos.dart';
 import 'package:mms/data/services/mocks/mock_api.dart';
@@ -14,7 +14,7 @@ Widget makeWidgetTestable({required Widget child}) {
           providers: [
         BlocProvider<ChartCubit>(
           create: (context) {
-            return ChartCubit(issueRepository: ChartRepository(api: MockAPI()));
+            return ChartCubit(messageRepository: ChartRepository(api: MockAPI()));
           },
         ),
         BlocProvider<ThemeCubit>(

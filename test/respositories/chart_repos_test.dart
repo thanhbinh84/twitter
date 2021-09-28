@@ -11,7 +11,7 @@ void main() {
 
   test('Chart repositories get correct data', () async {
     var repo = ChartRepository(api: api);
-    List<ChartData> issueList = await repo.getChartData(Period.OneWeek);
+    List<ChartData> issueList = await repo.getMessages(Period.OneWeek);
 
     expect(issueList.length, PERIOD_LENGTH);
   });
