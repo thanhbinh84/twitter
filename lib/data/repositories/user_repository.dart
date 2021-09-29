@@ -1,3 +1,5 @@
+import 'package:firebase_auth/firebase_auth.dart';
+
 abstract class UserRepository {
   Future<bool> isAuthenticated();
 
@@ -5,5 +7,5 @@ abstract class UserRepository {
 
   Future<void> signOut();
 
-  String? getUserId();
+  User? getUser();
 }

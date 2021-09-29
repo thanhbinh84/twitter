@@ -1,4 +1,5 @@
 import 'package:bloc/bloc.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:mms/blocs/message/message_states.dart';
 import 'package:mms/data/models/message.dart';
 import 'package:mms/data/repositories/message_repository.dart';
@@ -13,7 +14,7 @@ class MessageCubit extends Cubit<MessageState> {
   getMessages() async {
     try {
       emit(MessageLoadInProgress());
-      messageRepository.getMessages(userRepository.getUserId()).forEach((element) {
+      messageRepository.getMessages(userRepository.getUser()!.uid).forEach((element) {
         emit(MessageLoadSuccess(messages: element));
       });
     } catch (e) {
@@ -25,9 +26,11 @@ class MessageCubit extends Cubit<MessageState> {
     try {
       if (message.userId.isNotEmpty)
         messageRepository.updateMessage(message);
-      else
-        messageRepository.addMessage(
-            Message(text: message.text, date: DateTime.now(), userId: userRepository.getUserId() ?? ''));
+      else {
+        User? user = userRepository.getUser();
+        messageRepository.addMessage(Message(
+            text: message.text, date: DateTime.now(), userId: user!.uid, userName: user.displayName ?? ''));
+      }
     } catch (e) {
       addError(e);
     }
@@ -35,7 +38,7 @@ class MessageCubit extends Cubit<MessageState> {
 
   deleteMessage(Message message) async {
     try {
-        messageRepository.deleteMessage(message);
+      messageRepository.deleteMessage(message);
     } catch (e) {
       addError(e);
     }

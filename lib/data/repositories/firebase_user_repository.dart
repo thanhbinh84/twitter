@@ -28,5 +28,5 @@ class FirebaseUserRepository implements UserRepository {
     return _firebaseAuth.signOut();
   }
 
-  String? getUserId() => _firebaseAuth.currentUser?.uid;
+  User? getUser() => _firebaseAuth.currentUser;
 }

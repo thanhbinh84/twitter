@@ -53,8 +53,7 @@ class _MainScreenState extends State<MainScreen> {
         ));
   }
 
-  get _signOutButton =>
-      IconButton(onPressed: _showSignOutDialog, icon: Icon(Icons.logout));
+  get _signOutButton => IconButton(onPressed: _showSignOutDialog, icon: Icon(Icons.logout));
 
   _showSignOutDialog() {
     showDialog(
@@ -66,11 +65,11 @@ class _MainScreenState extends State<MainScreen> {
           actions: [
             TextButton(
               child: Text("Cancel"),
-              onPressed:  () => Navigator.of(dialogContext).pop(),
+              onPressed: () => Navigator.of(dialogContext).pop(),
             ),
             TextButton(
               child: Text("Confirm"),
-              onPressed:  () => _logout(dialogContext),
+              onPressed: () => _logout(dialogContext),
             ),
           ],
         );
@@ -106,45 +105,61 @@ class _MainScreenState extends State<MainScreen> {
         itemCount: messages.length);
   }
 
-  _messageListItem(msg) {
+  _messageListItem(Message msg) {
     bool isAuthor = msg.isAuthor;
-    return PopupMenuButton(
+    TextTheme textTheme = Theme.of(context).textTheme;
+    return _popupMenu(msg, isAuthor,
+        Row(
+          mainAxisAlignment: isAuthor ? MainAxisAlignment.start : MainAxisAlignment.end,
+          children: [
+            SizedBox(width: isAuthor ? 0 : 50),
+            Flexible(
+                child: Container(
+              margin: EdgeInsets.only(bottom: 5),
+              padding: EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(isAuthor ? 0 : 16),
+                    bottomRight: Radius.circular(16),
+                    bottomLeft: Radius.circular(16),
+                    topRight: Radius.circular(isAuthor ? 16 : 0)),
+                color: isAuthor ? Theme.of(context).accentColor : Theme.of(context).highlightColor,
+              ),
+              child: Column(
+                children: [
+                  Text(msg.text, style: textTheme.bodyText2),
+                  SizedBox(height: 10),
+                  Row(children: [
+                    Text(msg.userName, style: textTheme.bodyText1),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 10),
+                      child: Icon(Icons.circle, size: 5),
+                    ),
+                    Text(msg.time, style: textTheme.bodyText1)
+                  ],)
+                ],
+              ),
+            )),
+            SizedBox(width: isAuthor ? 50 : 0),
+          ],
+        ));
+  }
+
+  _popupMenu(Message msg, isAuthor, Widget child) => PopupMenuButton(
       enabled: isAuthor,
+      child: child,
       offset: Offset(0, 50),
       itemBuilder: (BuildContext context) => [
-        PopupMenuItem(
-          child: Text("Edit"),
-          value: 1,
-        ),
-        PopupMenuItem(
-          child: Text("Delete"),
-          value: 2,
-        )
-      ],
-      onSelected: (value) => value == 1 ? _edit(msg) : _delete(msg),
-      child: Row(
-        mainAxisAlignment: isAuthor ? MainAxisAlignment.start : MainAxisAlignment.end,
-        children: [
-          SizedBox(width: isAuthor ? 0 : 50),
-          Flexible(
-              child: Container(
-            margin: EdgeInsets.only(bottom: 5),
-            padding: EdgeInsets.symmetric(horizontal: 20, vertical: 15),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(isAuthor ? 0 : 16),
-                  bottomRight: Radius.circular(16),
-                  bottomLeft: Radius.circular(16),
-                  topRight: Radius.circular(isAuthor ? 16 : 0)),
-              color: isAuthor ? Theme.of(context).accentColor : Theme.of(context).highlightColor,
+            PopupMenuItem(
+              child: Text("Edit"),
+              value: 1,
             ),
-            child: Text(msg.text, style: Theme.of(context).textTheme.bodyText2),
-          )),
-          SizedBox(width: isAuthor ? 50 : 0),
-        ],
-      ),
-    );
-  }
+            PopupMenuItem(
+              child: Text("Delete"),
+              value: 2,
+            )
+          ],
+      onSelected: (value) => value == 1 ? _edit(msg) : _delete(msg));
 
   _edit(Message msg) {
     showDialog(

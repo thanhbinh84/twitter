@@ -10,9 +10,8 @@ class AuthCubit extends Cubit<AuthenticationState> {
   }) : super(AuthenticationUninitialized());
 
   Future<void> appStarted() async {
-    String? userId = userRepository.getUserId();
-    if (userId != null) {
-      emit(AuthenticationAuthenticated(userId: userId));
+    if (userRepository.getUser() != null) {
+      emit(AuthenticationAuthenticated());
     } else {
       emit(AuthenticationUnauthenticated());
     }

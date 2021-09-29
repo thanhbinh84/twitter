@@ -13,12 +13,8 @@ class AuthenticationUninitialized extends AuthenticationState {
 }
 
 class AuthenticationAuthenticated extends AuthenticationState {
-  final String userId;
-
-  AuthenticationAuthenticated({required this.userId}) : super([userId]);
-
   @override
-  String toString() => 'AuthenticationAuthenticated $userId';
+  String toString() => 'AuthenticationAuthenticated';
 }
 
 class AuthenticationUnauthenticated extends AuthenticationState {
