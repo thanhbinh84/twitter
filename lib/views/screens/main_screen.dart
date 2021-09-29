@@ -2,7 +2,7 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:mms/blocs/auth/auth_bloc.dart';
+import 'package:mms/blocs/auth/auth_cubit.dart';
 import 'package:mms/blocs/message/message_cubit.dart';
 import 'package:mms/blocs/message/message_states.dart';
 import 'package:mms/common/utils.dart';
@@ -130,7 +130,7 @@ class _MainScreenState extends State<MainScreen> {
                   Text(msg.text, style: textTheme.bodyText2),
                   SizedBox(height: 10),
                   Row(children: [
-                    Text(msg.userName, style: textTheme.bodyText1),
+                    Flexible(child: Text(msg.userName, style: textTheme.bodyText1)),
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 10),
                       child: Icon(Icons.circle, size: 5),

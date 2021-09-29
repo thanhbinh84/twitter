@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:mms/blocs/auth/auth_bloc.dart';
+import 'package:mms/blocs/auth/auth_cubit.dart';
 import 'package:mms/blocs/message/message_cubit.dart';
 import 'package:mms/data/repositories/firebase_message_repository.dart';
 import 'package:mms/data/repositories/firebase_user_repository.dart';

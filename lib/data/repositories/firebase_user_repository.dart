@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:mms/data/repositories/user_repository.dart';
+import 'package:mms/data/models/user.dart' as app;
 
 class FirebaseUserRepository implements UserRepository {
   final FirebaseAuth _firebaseAuth;
@@ -28,5 +29,5 @@ class FirebaseUserRepository implements UserRepository {
     return _firebaseAuth.signOut();
   }
 
-  User? getUser() => _firebaseAuth.currentUser;
+  app.User getUser() => app.User.fromFirebaseUser(_firebaseAuth.currentUser);
 }

@@ -1,28 +1,36 @@
+// @dart=2.9
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:golden_toolkit/golden_toolkit.dart';
-import 'package:mms/blocs/chart/message_cubit.dart';
+import 'package:mms/blocs/message/message_cubit.dart';
 import 'package:mms/blocs/theme/theme_cubit.dart';
-import 'package:mms/data/repositories/chart_repos.dart';
-import 'package:mms/data/services/mocks/mock_api.dart';
+import 'package:mms/data/models/message.dart';
+import 'package:mms/data/models/user.dart';
+import 'package:mms/data/repositories/message_repository.dart';
+import 'package:mms/data/repositories/user_repository.dart';
 import 'package:mms/views/screens/main_screen.dart';
+import 'package:mockito/mockito.dart';
 
-Widget makeWidgetTestable({required Widget child}) {
+class MockMessageRepository extends Mock implements MessageRepository {}
+
+class MockUserRepository extends Mock implements UserRepository {}
+
+Widget makeWidgetTestable({ Widget child, messageCubit}) {
   return MaterialApp(
       home: MultiBlocProvider(
           providers: [
-        BlocProvider<ChartCubit>(
-          create: (context) {
-            return ChartCubit(messageRepository: ChartRepository(api: MockAPI()));
-          },
-        ),
-        BlocProvider<ThemeCubit>(
-          create: (context) {
-            return ThemeCubit();
-          },
-        ),
-      ],
+            BlocProvider<MessageCubit>(
+              create: (context) {
+                return messageCubit;
+              },
+            ),
+            BlocProvider<ThemeCubit>(
+              create: (context) {
+                return ThemeCubit();
+              },
+            ),
+          ],
           child: BlocProvider(
               create: (_) => ThemeCubit(),
               child: BlocBuilder<ThemeCubit, ThemeData>(builder: (_, theme) {
@@ -38,7 +46,25 @@ Widget makeWidgetTestable({required Widget child}) {
 }
 
 void main() {
-  testGoldens('Chart screen should render correctly on multiple screens', (tester) async {
+  testGoldens('Message screen should render correctly on multiple screens', (tester) async {
+    MockMessageRepository messageRepository = MockMessageRepository();
+    List<Message> messages = [
+      Message(date: DateTime.now(),
+          text: 'Long long Long long Long long Long long Long long Long long Long long Long long text',
+          userName: 'long long long long name'),
+      Message(date: DateTime.now(),
+          text: 'Long long Long long Long long Long long Long long Long long Long long Long long text',
+          userName: 'short name'),
+      Message(date: DateTime.now(), text: 'short text', userName: 'long long long long name'),
+      Message(date: DateTime.now(), text: 'short text', userName: 'short name'),
+    ];
+    when(messageRepository.getMessages(any)).thenAnswer((_) => Stream.fromIterable([messages]));
+
+    MockUserRepository userRepository = MockUserRepository();
+    when(userRepository.getUser()).thenReturn(User());
+    MessageCubit messageCubit = MessageCubit(
+        messageRepository: messageRepository, userRepository: userRepository);
+
     final builder = DeviceBuilder()
       ..overrideDevicesForAllScenarios(devices: [
         Device.phone,
@@ -47,11 +73,10 @@ void main() {
         Device.tabletLandscape,
       ])
       ..addScenario(
-        widget: makeWidgetTestable(child: MainScreen()),
-        name: 'Chart screen',
-      )
-      ..addScenario(
-        widget: makeWidgetTestable(child: MainScreen()),
+        widget: makeWidgetTestable(child: MainScreen(), messageCubit: messageCubit),
+        name: 'Message screen',
+      )..addScenario(
+        widget: makeWidgetTestable(child: MainScreen(), messageCubit: messageCubit),
         name: 'Dark mode',
         onCreate: (scenarioWidgetKey) async {
           final finder = find.descendant(
@@ -61,9 +86,8 @@ void main() {
           expect(finder, findsOneWidget);
           await tester.tap(finder);
         },
-      )
-      ..addScenario(
-        widget: makeWidgetTestable(child: MainScreen()),
+      )..addScenario(
+        widget: makeWidgetTestable(child: MainScreen(), messageCubit: messageCubit),
         name: 'Light mode',
         onCreate: (scenarioWidgetKey) async {
           final finder = find.descendant(
