@@ -18,8 +18,6 @@ class MainScreen extends StatefulWidget {
   _MainScreenState createState() => _MainScreenState();
 }
 
-enum WhyFarther { harder, smarter, selfStarter, tradingCharter }
-
 class _MainScreenState extends State<MainScreen> {
   TextEditingController _inputController = TextEditingController();
   final _listController = ScrollController();
